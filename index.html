@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOXIRA Mining</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#101820;color:white;
+ font-family:Arial,sans-serif;text-align:center;
+ padding:25px 18px 100px;
+}
+header{color:#70e58a;font-size:27px;font-weight:bold;margin:15px}
+.subtitle{color:#9caab6}
+.card{
+ background:#1c2934;border-radius:20px;
+ padding:25px;margin:20px 0;
+}
+.balance{font-size:38px;font-weight:bold;color:#70e58a}
+.coin{font-size:65px;margin:15px}
+button{
+ border:0;border-radius:13px;padding:15px;
+ font-size:16px;font-weight:bold;cursor:pointer;
+ background:#70e58a;color:#102019;
+}
+.mine{width:150px;height:150px;border-radius:50%;font-size:20px}
+nav{
+ position:fixed;bottom:0;left:0;width:100%;
+ background:#1c2934;display:flex;
+ justify-content:space-around;padding:15px 4px;
+}
+nav button{background:transparent;color:white;font-size:12px;padding:8px}
+section{margin-top:20px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>✦ NOXIRA</header>
+<p class="subtitle">The future of mining starts here</p>
+
+<section id="home">
+ <div class="card">
+  <p>Your NOX Balance</p>
+  <div class="balance" id="balance">0.00</div>
+  <p>NOX</p>
+ </div>
+ <div class="coin">💎</div>
+ <button class="mine" onclick="mine()">⛏️<br>MINE</button>
+ <p id="status">Ready to start mining</p>
+</section>
+
+<section id="tasks" class="hidden">
+ <div class="card">
+  <h2>🎁 Tasks</h2>
+  <p>More rewards coming soon!</p>
+ </div>
+</section>
+
+<section id="friends" class="hidden">
+ <div class="card">
+  <h2>👥 Friends</h2>
+  <p>Invite friends and earn NOX</p>
+  <button onclick="share()">Invite Friends</button>
+ </div>
+</section>
+
+<section id="wallet" class="hidden">
+ <div class="card">
+  <h2>💎 Wallet</h2>
+  <p>Demo version. Withdrawals are not enabled yet.</p>
+ </div>
+</section>
+
+<nav>
+ <button onclick="show('home')">🏠<br>Home</button>
+ <button onclick="show('tasks')">🎁<br>Tasks</button>
+ <button onclick="show('friends')">👥<br>Friends</button>
+ <button onclick="show('wallet')">💎<br>Wallet</button>
+</nav>
+
+<script>
+let balance=Number(localStorage.getItem('nox')||0);
+function update(){
+ document.getElementById('balance').textContent=balance.toFixed(2);
+}
+function mine(){
+ balance+=1;
+ localStorage.setItem('nox',balance);
+ update();
+ document.getElementById('status').textContent='You earned 1 demo NOX!';
+}
+function show(page){
+ ['home','tasks','friends','wallet'].forEach(id=>{
+  document.getElementById(id).classList.toggle('hidden',id!==page);
+ });
+}
+function share(){
+ const link='https://t.me/NoxiraMiningBot';
+ if(navigator.share) navigator.share({title:'NOXIRA',url:link});
+ else if(navigator.clipboard) navigator.clipboard.writeText(link);
+}
+update();
+if(window.Telegram?.WebApp) Telegram.WebApp.ready();
+</script>
+</body>
+</html>
